@@ -1,0 +1,5 @@
+# GitHub-ийн 100 MB хязгаараас том (255 MB) — data.lacity.org-оос татна
+Dataset/Crime_Data_from_2020_to_Present.csv
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

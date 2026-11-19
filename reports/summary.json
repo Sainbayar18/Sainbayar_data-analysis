@@ -1,0 +1,418 @@
+{
+  "salaries": {
+    "rows": 50,
+    "top_starting": {
+      "Physician Assistant": 74300.0,
+      "Chemical Engineering": 63200.0,
+      "Computer Engineering": 61400.0,
+      "Electrical Engineering": 60900.0,
+      "Mechanical Engineering": 57900.0
+    },
+    "top_midcareer": {
+      "Chemical Engineering": 107000.0,
+      "Computer Engineering": 105000.0,
+      "Electrical Engineering": 103000.0,
+      "Aerospace Engineering": 101000.0,
+      "Economics": 98600.0
+    },
+    "lowest_midcareer": {
+      "Education": 52000.0,
+      "Religion": 52000.0,
+      "Spanish": 53100.0,
+      "Interior Design": 53200.0,
+      "Music": 55000.0
+    },
+    "top_growth_pct": {
+      "Math": 103.5,
+      "Philosophy": 103.5,
+      "International Relations": 97.8,
+      "Economics": 96.8,
+      "Marketing": 95.1
+    },
+    "widest_spread": {
+      "Economics": 159400.0,
+      "Finance": 147800.0,
+      "Math": 137800.0,
+      "Marketing": 132900.0,
+      "Philosophy": 132500.0
+    },
+    "group_median_mid": {
+      "Business": 74450.0,
+      "HASS": 60950.0,
+      "STEM": 93000.0
+    }
+  },
+  "japan": {
+    "rows": 813,
+    "by_type": {
+      "Private": 626,
+      "Public": 101,
+      "National": 86
+    },
+    "difficulty_median_by_type": {
+      "National": 51.7,
+      "Private": 38.5,
+      "Public": 50.0
+    },
+    "rating_median_by_type": {
+      "National": 3.93,
+      "Private": 3.78,
+      "Public": 3.9
+    },
+    "corr_difficulty_rating": 0.405,
+    "corr_difficulty_reviewcount": 0.481,
+    "top_prefectures": {
+      "Tokyo To": 146,
+      "Osaka Fu": 58,
+      "Aichi Ken": 52,
+      "Hokkai Do": 37,
+      "Hyogo Ken": 36
+    },
+    "tokyo_share_pct": 18.0,
+    "has_grad_pct": 81.3,
+    "founded_after_1945_pct": 76.5,
+    "top10_difficulty": [
+      {
+        "name": "The University of Tokyo",
+        "type": "National",
+        "difficulty_SD": 70.5,
+        "review_rating": 4.34
+      },
+      {
+        "name": "Nippon Medical School",
+        "type": "Private",
+        "difficulty_SD": 70.0,
+        "review_rating": 3.99
+      },
+      {
+        "name": "Akita International University",
+        "type": "Public",
+        "difficulty_SD": 69.7,
+        "review_rating": 4.18
+      },
+      {
+        "name": "International Christian University",
+        "type": "Private",
+        "difficulty_SD": 68.0,
+        "review_rating": 4.43
+      },
+      {
+        "name": "Hitotsubashi University",
+        "type": "National",
+        "difficulty_SD": 67.9,
+        "review_rating": 4.26
+      },
+      {
+        "name": "Keio University",
+        "type": "Private",
+        "difficulty_SD": 66.3,
+        "review_rating": 4.19
+      },
+      {
+        "name": "Waseda University",
+        "type": "Private",
+        "difficulty_SD": 65.7,
+        "review_rating": 4.14
+      },
+      {
+        "name": "Kyoto University",
+        "type": "National",
+        "difficulty_SD": 65.6,
+        "review_rating": 4.2
+      },
+      {
+        "name": "Tokyo Institute of Technology",
+        "type": "National",
+        "difficulty_SD": 65.0,
+        "review_rating": 4.25
+      },
+      {
+        "name": "Hamamatsu University School of Medicine",
+        "type": "National",
+        "difficulty_SD": 64.4,
+        "review_rating": 3.89
+      }
+    ]
+  },
+  "powerball": {
+    "draws": 1891,
+    "date_range": [
+      "2010-02-03",
+      "2026-01-19"
+    ],
+    "draws_current_rules": 1300,
+    "hot_white": {
+      "61": 117,
+      "21": 115,
+      "28": 113,
+      "23": 113,
+      "69": 112
+    },
+    "cold_white": {
+      "13": 70,
+      "26": 76,
+      "49": 76,
+      "46": 77,
+      "65": 81
+    },
+    "hot_pb": {
+      "4": 63,
+      "14": 61,
+      "21": 60
+    },
+    "chi2_white_df68": 80.2,
+    "chi2_pb_df25": 22.2,
+    "multiplier_counts": {
+      "2.0": 878,
+      "3.0": 518,
+      "nan": 210,
+      "4.0": 155,
+      "5.0": 111,
+      "10.0": 19
+    }
+  },
+  "occupancy": {
+    "rows": 10129,
+    "dates": [
+      "2017/12/22",
+      "2017/12/23",
+      "2017/12/24",
+      "2017/12/25",
+      "2017/12/26",
+      "2018/01/10",
+      "2018/01/11"
+    ],
+    "class_counts": {
+      "0": 8228,
+      "1": 459,
+      "2": 748,
+      "3": 694
+    },
+    "empty_room_pct": 81.2,
+    "top_corr": {
+      "S1_Light": 0.849,
+      "S3_Light": 0.793,
+      "S2_Light": 0.789,
+      "S1_Temp": 0.701,
+      "S7_PIR": 0.695
+    },
+    "light_threshold_rule": {
+      "threshold": 20,
+      "accuracy_pct": 98.2
+    },
+    "mean_by_count": {
+      "S1_Light": {
+        "0": 2.7,
+        "1": 120.2,
+        "2": 136.1,
+        "3": 113.3
+      },
+      "S5_CO2": {
+        "0": 404.4,
+        "1": 470.7,
+        "2": 713.2,
+        "3": 851.2
+      },
+      "S1_Temp": {
+        "0": 25.3,
+        "1": 25.7,
+        "2": 26.0,
+        "3": 26.1
+      }
+    }
+  },
+  "sensor": {
+    "rows": 26387,
+    "range": [
+      "2016-08-18 10:55:00",
+      "2017-12-18 08:25:00"
+    ],
+    "stats": {
+      "count": 26387.0,
+      "mean": 57.72,
+      "std": 9.3,
+      "min": 50.0,
+      "25%": 50.0,
+      "50%": 55.0,
+      "75%": 63.0,
+      "max": 100.0
+    },
+    "share_at_50_pct": 43.2,
+    "gaps_over_1h": 112,
+    "longest_gap": "43 days 22:45:00",
+    "days_with_data": 366,
+    "calendar_days": 488,
+    "peak_hour": 9,
+    "low_hour": 0
+  },
+  "apartments": {
+    "rows_after_cleaning": 10580,
+    "rows_ub_main_districts": 10454,
+    "date_range": [
+      "2019-12-07 20:50:00",
+      "2021-01-14 00:00:00"
+    ],
+    "price_median_mnt": 60000000,
+    "area_median_m2": 34.8,
+    "price_m2_median_mnt": 1711538,
+    "by_district": {
+      "Чингэлтэй": {
+        "median_m2_mnt": 2057983,
+        "n": 334
+      },
+      "Сүхбаатар": {
+        "median_m2_mnt": 1895734,
+        "n": 675
+      },
+      "Хан-Уул": {
+        "median_m2_mnt": 1789473,
+        "n": 2123
+      },
+      "Баянгол": {
+        "median_m2_mnt": 1774193,
+        "n": 2462
+      },
+      "Баянзүрх": {
+        "median_m2_mnt": 1654698,
+        "n": 3434
+      },
+      "Сонгино Хайрхан": {
+        "median_m2_mnt": 1507692,
+        "n": 1363
+      },
+      "Налайх": {
+        "median_m2_mnt": 1228571,
+        "n": 63
+      }
+    },
+    "by_leasing": {
+      "Банкны лизингтэй": {
+        "median_m2_mnt": 1750000,
+        "n": 947
+      },
+      "Хувь лизингтэй": {
+        "median_m2_mnt": 1722222,
+        "n": 795
+      },
+      "Лизинггүй": {
+        "median_m2_mnt": 1710492,
+        "n": 8712
+      }
+    },
+    "by_floor_type": {
+      "Мод": {
+        "median_m2_mnt": 1857142,
+        "n": 253
+      },
+      "Паркет": {
+        "median_m2_mnt": 1710526,
+        "n": 9874
+      },
+      "Цемент": {
+        "median_m2_mnt": 1655172,
+        "n": 119
+      },
+      "Ламинат": {
+        "median_m2_mnt": 1650000,
+        "n": 171
+      }
+    },
+    "top_locations": {
+      "40, 50 мянгат": {
+        "median_m2_mnt": 2500000,
+        "n": 156
+      },
+      "Төмөр зам": {
+        "median_m2_mnt": 2166666,
+        "n": 199
+      },
+      "Баянмонгол хороолол": {
+        "median_m2_mnt": 2114814,
+        "n": 60
+      },
+      "Олимп хотхон": {
+        "median_m2_mnt": 2100000,
+        "n": 35
+      },
+      "Хурд": {
+        "median_m2_mnt": 2077578,
+        "n": 102
+      },
+      "Нарны хороолол": {
+        "median_m2_mnt": 2076923,
+        "n": 130
+      },
+      "120 мянгат": {
+        "median_m2_mnt": 2043838,
+        "n": 77
+      },
+      "Баруун 4 зам": {
+        "median_m2_mnt": 2000000,
+        "n": 84
+      }
+    },
+    "corr_with_price": {
+      "Талбай": 0.723,
+      "Ашиглалтанд орсон он": 0.016,
+      "Барилгын давхар": 0.182,
+      "Хэдэн давхарт": 0.08,
+      "Цонхны тоо": 0.392
+    },
+    "raw_rows": 27861,
+    "views_median": 215.0
+  },
+  "crime": {
+    "rows": 1004991,
+    "date_range": [
+      "2020-01-01",
+      "2025-05-29"
+    ],
+    "per_year": {
+      "2020": 199847,
+      "2021": 209876,
+      "2022": 235259,
+      "2023": 232345,
+      "2024": 127567,
+      "2025": 97
+    },
+    "top_types": {
+      "VEHICLE - STOLEN": 115190,
+      "BATTERY - SIMPLE ASSAULT": 74839,
+      "BURGLARY FROM VEHICLE": 63517,
+      "THEFT OF IDENTITY": 62537,
+      "VANDALISM - FELONY ($400 & OVER, ALL CHURCH VANDALISMS)": 61092
+    },
+    "top_areas": {
+      "Central": 69670,
+      "77th Street": 61758,
+      "Pacific": 59514,
+      "Southwest": 57441,
+      "Hollywood": 52429
+    },
+    "peak_hour": 12,
+    "noon_share_pct": 6.7,
+    "victim_age_median": 37.0,
+    "victim_age_zero_or_missing_pct": 26.8,
+    "victim_sex_share_pct": {
+      "Эрэгтэй": 47.0,
+      "Эмэгтэй": 41.7,
+      "Тодорхойгүй": 11.4
+    },
+    "weapon_reported_pct": 32.6,
+    "status": {
+      "Invest Cont": 802862,
+      "Adult Other": 109802,
+      "Adult Arrest": 87155,
+      "Juv Arrest": 3286,
+      "Juv Other": 1879,
+      "UNK": 7
+    },
+    "top_premises": {
+      "STREET": 261284,
+      "SINGLE FAMILY DWELLING": 163654,
+      "MULTI-UNIT DWELLING (APARTMENT, DUPLEX, ETC)": 119011,
+      "PARKING LOT": 69147,
+      "OTHER BUSINESS": 47647
+    }
+  }
+}
