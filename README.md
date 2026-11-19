@@ -1,11 +1,14 @@
 # Data Analysis — 7 сэдвийн датасетийн шинжилгээ
 
+**Интерактив дашборд: https://sainbayar-data-analysis.vercel.app** (`site/` хавтас, `main` салбарт push хийх бүрт Vercel автоматаар шинэчилнэ.)
+
 `Dataset/` хавтас дахь 8 CSV файлыг (7 сэдэв) Python (pandas, matplotlib, seaborn)-ээр шинжилсэн.
 Бүх тоо, графикийг [`analysis/analyze.py`](analysis/analyze.py) скрипт гаргадаг. Тоон дүнгүүд [`reports/summary.json`](reports/summary.json)-д, графикууд [`reports/figures/`](reports/figures/)-д байна.
 
 ```powershell
 pip install pandas matplotlib seaborn
-python analysis/analyze.py
+python analysis/analyze.py            # графикууд + reports/summary.json
+python analysis/export_dashboard.py   # дашбордын нэгтгэсэн JSON (dashboard/data/)
 ```
 
 | # | Датасет | Мөр | Сэдэв |
