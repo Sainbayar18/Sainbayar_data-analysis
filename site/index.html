@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Долоон датасетийн шинжилгээ</title>
+<meta name="description" content="Улаанбаатарын орон сууц, LA гэмт хэрэг, Powerball, мэдрэгч, Японы сургууль, АНУ-ын цалингийн өгөгдлийн шинжилгээ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500&display=swap">
+<style>
+  /* Layout: one centered reading column, cards in an auto-fit grid. Cool slate neutrals, ink-blue accent. */
+  :root {
+    --color-bg: #f6f7f9; --color-panel: #ffffff; --color-fg: #17202b; --color-fg-muted: #5a6573;
+    --color-border-line: #dde2e8; --color-ok: #2f8f5b; --color-warn: #c9861a; --color-bad: #c2412d;
+    --s0: #2a5fa8; --s1: #c27a12; --s2: #2f8f7a; --s3: #8a4fb0;
+    --cds-chart-muted: #a7b0bc; --cds-chart-status-critical: #c2412d; --cds-chart-grid: #e7eaef;
+    --cds-chart-axis: #b8c0ca; --cds-chart-reference: #6b7684; --cds-text-secondary: #5a6573;
+    --cds-surface-popover: #ffffff; --cds-border: #d3d9e0; --cds-shadow-popover: 0 6px 20px rgba(23, 32, 43, .12);
+    --skeleton: #e6e9ee;
+    --font-anthropic-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-anthropic-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --cds-font-size-caption: 12.5px; --cds-font-size-body: 15px; --cds-font-size-heading: 22px; --cds-font-size-title: 30px;
+    --cds-font-weight-medium: 500;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 12px; --cds-gap-lg: 20px; --cds-gap-xl: 36px;
+    --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-radius: 8px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-bg: #11161d; --color-panel: #18202a; --color-fg: #e6ebf1; --color-fg-muted: #9aa6b4;
+      --color-border-line: #2a3542; --color-ok: #5cc28a; --color-warn: #e0a647; --color-bad: #ef7a64;
+      --s0: #6f9fe6; --s1: #e5a44a; --s2: #4fc0a6; --s3: #b88ad8;
+      --cds-chart-muted: #5d6978; --cds-chart-status-critical: #ef7a64; --cds-chart-grid: #222c37;
+      --cds-chart-axis: #3a4655; --cds-chart-reference: #9aa6b4; --cds-text-secondary: #9aa6b4;
+      --cds-surface-popover: #1f2834; --cds-border: #33404f; --cds-shadow-popover: 0 6px 20px rgba(0, 0, 0, .45);
+      --skeleton: #222c37; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #11161d; --color-panel: #18202a; --color-fg: #e6ebf1; --color-fg-muted: #9aa6b4;
+    --color-border-line: #2a3542; --color-ok: #5cc28a; --color-warn: #e0a647; --color-bad: #ef7a64;
+    --s0: #6f9fe6; --s1: #e5a44a; --s2: #4fc0a6; --s3: #b88ad8;
+    --cds-chart-muted: #5d6978; --cds-chart-status-critical: #ef7a64; --cds-chart-grid: #222c37;
+    --cds-chart-axis: #3a4655; --cds-chart-reference: #9aa6b4; --cds-text-secondary: #9aa6b4;
+    --cds-surface-popover: #1f2834; --cds-border: #33404f; --cds-shadow-popover: 0 6px 20px rgba(0, 0, 0, .45);
+    --skeleton: #222c37; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--color-bg); color: var(--color-fg); font: 15px/1.5 var(--font-anthropic-sans); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  code { font-size: .92em; }
+  a { color: var(--s0); }
+  :focus-visible { outline: 2px solid var(--s0); outline-offset: 2px; }
+  .dash-skeleton { position: relative; color: transparent !important; }
+  .dash-skeleton::after { content: ""; position: absolute; inset: 0; border-radius: 4px; background: var(--skeleton); }
+  b.dash-skeleton { display: inline-block; min-width: 4ch; }
+  .site-foot { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--color-border-line); font-size: 12.5px; color: var(--color-fg-muted); display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  @media (max-width: 520px) { :root { --cds-font-size-title: 25px; --cds-font-size-heading: 19px; } }
+</style>
+<style>
+  .an { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+  .an-head { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+  .an-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .an-lede { margin: 0; max-width: 68ch; color: var(--color-fg-muted); line-height: 1.55; }
+  .an-nav { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); }
+  .an-nav a { font-size: var(--cds-font-size-caption); text-decoration: none; color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 4px 12px; }
+  .an-nav a:hover, .an-nav a:focus-visible { background: var(--color-panel); }
+  .an-sec { display: flex; flex-direction: column; gap: var(--cds-gap-lg); padding-top: var(--cds-pad-lg); border-top: 1px solid var(--color-border-line); scroll-margin-top: 16px; }
+  .an-sec > header { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .an-eyebrow { font-size: var(--cds-font-size-caption); letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); margin: 0; }
+  .an-sec h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; text-wrap: balance; }
+  .an-sec h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+  .an-p { margin: 0; max-width: 68ch; line-height: 1.6; }
+  .an-p b, .an-kpi b { font-variant-numeric: tabular-nums; font-weight: var(--cds-font-weight-medium); }
+  .an-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--cds-gap-md); }
+  .an-kpi { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .an-kpi .an-num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; }
+  .an-kpi span:last-child { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .an-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--cds-gap-lg); }
+  .an-grid > * { min-width: 0; }
+  .an-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .an-cap { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.5; }
+  .an-chart { position: relative; width: 100%; min-height: 200px; }
+  .an-chart.an-tall { min-height: 420px; }
+  .an-chart svg { display: block; overflow: visible; }
+  .an-chart text { font-family: var(--font-anthropic-sans); }
+  .an-tick { fill: var(--cds-text-secondary); font-size: var(--cds-font-size-caption); }
+  .an-val { fill: var(--color-fg); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .an-gridline { stroke: var(--cds-chart-grid); }
+  .an-axis { stroke: var(--cds-chart-axis); }
+  .an-ref { stroke: var(--cds-chart-reference); stroke-dasharray: 4 3; }
+  .an-shade { fill: var(--cds-chart-muted); opacity: .25; }
+  .an-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; }
+  .an-tip { position: absolute; z-index: 5; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 10px; font-size: var(--cds-font-size-caption); color: var(--cds-text-secondary); max-width: 260px; font-variant-numeric: tabular-nums; }
+  .an-tip-h { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .an-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .an-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .an-sw { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: var(--cds-chart-muted); }
+  .an-note { border-left: 3px solid var(--color-warn); padding: 4px 0 4px 12px; margin: 0; max-width: 68ch; line-height: 1.55; }
+  .an-tbl-wrap { overflow-x: auto; }
+  .an-tbl { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .an-tbl th, .an-tbl td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .an-tbl th:first-child, .an-tbl td:first-child { text-align: left; }
+  .an-tbl th { color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+  .an-foot summary { cursor: pointer; color: var(--color-fg-muted); }
+  .an-foot ul { line-height: 1.6; max-width: 68ch; }
+  @media print { .an-nav { display: none; } .an-sec { break-before: page; } }
+</style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+/* Tiny stand-in for the dashboard runtime: loads data/<id>.json and re-runs drawings on data and resize. */
+window.dash = (function () {
+  const ids = ["apt_district", "apt_locations", "apt_year", "crime_areas", "crime_hour", "crime_monthly", "crime_types", "headline", "jp_type", "jp_unis", "occ_by_count", "occ_corr", "pb_red", "pb_white", "salaries", "sensor_daily"];
+  const store = {};
+  ids.forEach((id) => { store[id] = { status: 'loading', data: [] }; });
+  const draws = {}, dataFns = [];
+  function runDraw(name) {
+    document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => {
+      if (el.closest('[hidden]')) return;
+      try { draws[name](el); } catch (e) { console.error(name, e); }
+    });
+  }
+  function runAll() {
+    dataFns.forEach((fn) => { try { fn(); } catch (e) { console.error(e); } });
+    Object.keys(draws).forEach(runDraw);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    runAll();
+    Promise.all(ids.map((id) => fetch('data/' + id + '.json')
+      .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then((j) => { store[id] = { status: 'ok', data: j.rows }; })
+      .catch((e) => { store[id] = { status: 'error', data: [], message: String(e) }; })
+    )).then(runAll);
+    let t, w = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth === w) return;
+      w = window.innerWidth; clearTimeout(t); t = setTimeout(runAll, 150);
+    });
+  });
+  return {
+    colors: ['var(--s0)', 'var(--s1)', 'var(--s2)', 'var(--s3)'],
+    data: (id) => store[id] || { status: 'missing', data: [] },
+    draw: (name, fn) => { draws[name] = fn; },
+    onData: (fn) => { dataFns.push(fn); },
+    setLink: (id) => { try { history.replaceState(null, '', '#' + id); } catch (e) {} },
+    params: () => ({}), setParams() {}, resetParams() {}, calc() {}, loader() {}, refresh() {},
+  };
+})();
+</script>
+<div class="wrap">
+
+
+<div class="an" data-read lang="mn">
+  <header class="an-head" id="top">
+    <h1 class="an-title">Долоон датасетийн шинжилгээ</h1>
+    <p class="an-lede">Улаанбаатарт 1 м² орон сууцны медиан үнэ <b data-draw="h" data-source="headline" data-field="value" data-where="key=apt_m2" data-fmt="mnt">—</b>. Лос Анжелесийн <b data-draw="h" data-source="headline" data-field="value" data-where="key=crime_total" data-fmt="int">—</b> гэмт хэргийн ердөө <b data-draw="h" data-source="headline" data-field="value" data-where="key=crime_arrest_pct" data-fmt="pct">—</b>-д нь насанд хүрэгчийг баривчилжээ. Powerball-ын "азтай дугаар" гэж байхгүй, тархалт нь санамсаргүй.</p>
+    <nav class="an-nav" aria-label="Хэсгүүд">
+      <a href="#apartments">Орон сууц</a>
+      <a href="#crime">LA гэмт хэрэг</a>
+      <a href="#powerball">Powerball</a>
+      <a href="#occupancy">Өрөөний хүний тоо</a>
+      <a href="#sensor">Мэдрэгч</a>
+      <a href="#japan">Японы сургууль</a>
+      <a href="#salaries">Цалин</a>
+    </nav>
+  </header>
+
+  <!-- 1. Орон сууц -->
+  <section class="an-sec" id="apartments">
+    <header>
+      <p class="an-eyebrow">unegui.mn · 2019-12 – 2021-01</p>
+      <h2>Улаанбаатарын орон сууцны үнэ</h2>
+    </header>
+    <div class="an-kpis">
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=apt_m2" data-fmt="mnt">—</b><span>1 м²-ын медиан үнэ</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=apt_price" data-fmt="mnt">—</b><span>Медиан үнэ</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=apt_area" data-fmt="d1">—</b><span>Медиан талбай, м²</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=apt_n" data-fmt="int">—</b><span>Шинжилсэн зар (10–200 м²)</span></div>
+    </div>
+    <p class="an-p"><b data-draw="topname" data-source="apt_district" data-field="district" data-row="0">—</b> дүүрэг хамгийн үнэтэй. Үнийг хамгийн их тодорхойлдог нь талбай (r = <b data-draw="h" data-source="headline" data-field="value" data-where="key=apt_corr_area" data-fmt="r">—</b>). Харин ашиглалтанд орсон он бараг нөлөөгүй (r = <b data-draw="h" data-source="headline" data-field="value" data-where="key=apt_corr_year" data-fmt="r">—</b>): төвийн хуучин байр, захын шинэ байр ойролцоо үнэтэй байна.</p>
+    <div class="an-grid">
+      <div class="an-card" id="apt-district-card">
+        <h3>Дүүргээр 1 м²-ын үнэ</h3>
+        <p class="an-cap">Цэг нь медиан, зураас нь дунд 50% (25–75-р хувь).</p>
+        <div class="an-chart" data-draw="apt-district" data-source="apt_district"></div>
+      </div>
+      <div class="an-card" id="apt-loc-card">
+        <h3>Хамгийн үнэтэй 10 байршил</h3>
+        <p class="an-cap">1 м²-ын медиан үнэ, 30-аас дээш зартай байршил.</p>
+        <div class="an-chart" data-draw="apt-loc" data-source="apt_locations"></div>
+      </div>
+    </div>
+    <div class="an-card" id="apt-year-card">
+      <h3>Ашиглалтанд орсон оноор 1 м²-ын медиан үнэ</h3>
+      <p class="an-cap">10-аас дээш зартай он. 1990-ээс өмнөх байрны үнэ шинэ байрнаас дутахгүй.</p>
+      <div class="an-chart" data-draw="apt-year" data-source="apt_year"></div>
+    </div>
+  </section>
+
+  <!-- 2. LA гэмт хэрэг -->
+  <section class="an-sec" id="crime">
+    <header>
+      <p class="an-eyebrow">LAPD · 2020-01 – 2025-05</p>
+      <h2>Лос Анжелесийн гэмт хэрэг</h2>
+    </header>
+    <div class="an-kpis">
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=crime_total" data-fmt="int">—</b><span>Нийт бүртгэгдсэн хэрэг</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=crime_2022" data-fmt="int">—</b><span>2022 онд</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=crime_open_pct" data-fmt="pct">—</b><span>Мөрдөлт үргэлжилж буй</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=crime_arrest_pct" data-fmt="pct">—</b><span>Насанд хүрэгчийг баривчилсан</span></div>
+    </div>
+    <p class="an-note">2024 оны бууралт бодит биш. LAPD 2024 онд шинэ бүртгэлийн систем (NIBRS) рүү шилжсэн тул шинэ хэрэг энэ датасетэд бүрэн орохоо больсон. 2024 онд <b data-draw="h" data-source="headline" data-field="value" data-where="key=crime_2024" data-fmt="int">—</b> хэрэг бүртгэгдсэн нь 2023 оны <b data-draw="h" data-source="headline" data-field="value" data-where="key=crime_2023" data-fmt="int">—</b>-аас бага харагдана. Саарал хэсгийг чиг хандлагад бүү ашигла.</p>
+    <div class="an-card" id="crime-month-card">
+      <h3>Сар бүрийн хэргийн тоо</h3>
+      <div class="an-chart" data-draw="crime-month" data-source="crime_monthly"></div>
+    </div>
+    <div class="an-grid">
+      <div class="an-card" id="crime-types-card">
+        <h3>Хамгийн түгээмэл 10 төрөл</h3>
+        <p class="an-cap">Машин хулгай тэргүүлж байна: <b data-draw="topname" data-source="crime_types" data-field="type" data-row="0">—</b>.</p>
+        <div class="an-chart" data-draw="crime-types" data-source="crime_types"></div>
+      </div>
+      <div class="an-card" id="crime-hour-card">
+        <h3>Өдрийн цагаар</h3>
+        <p class="an-cap">12:00-ын оргил нь цаг нь тодорхойгүй хэргийг үд дунд гэж бүртгэдэгтэй холбоотой байж магадгүй.</p>
+        <div class="an-chart" data-draw="crime-hour" data-source="crime_hour"></div>
+      </div>
+    </div>
+    <div class="an-card" id="crime-areas-card">
+      <h3>LAPD-ийн 21 бүсээр</h3>
+      <div class="an-chart an-tall" data-draw="crime-areas" data-source="crime_areas"></div>
+    </div>
+  </section>
+
+  <!-- 3. Powerball -->
+  <section class="an-sec" id="powerball">
+    <header>
+      <p class="an-eyebrow">АНУ · 2015-10-07-оос хойш</p>
+      <h2>Powerball-д азтай дугаар байдаг уу?</h2>
+    </header>
+    <p class="an-p">Үгүй. Одоогийн дүрмээр явагдсан <b data-draw="h" data-source="headline" data-field="value" data-where="key=pb_draws" data-fmt="int">—</b> тохиролд цагаан бөмбөгний χ² = <b data-draw="h" data-source="headline" data-field="value" data-where="key=pb_chi_white" data-fmt="d1">—</b> (68 эрх чөлөөний зэрэг, 0.05 түвшний босго 88.3), улаан бөмбөгнийх χ² = <b data-draw="h" data-source="headline" data-field="value" data-where="key=pb_chi_red" data-fmt="d1">—</b> (босго 37.7). Хоёулаа босгоос доогуур тул тархалт тэгш, "халуун" дугаар гэдэг нь санамсаргүй хэлбэлзэл юм.</p>
+    <div class="an-card" id="pb-white-card">
+      <h3>Цагаан бөмбөг 1–69: гарсан тоо</h3>
+      <p class="an-cap">Тасархай шугам нь бүх дугаар тэгш гарвал хүлээгдэх тоо.</p>
+      <div class="an-chart" data-draw="pb-white" data-source="pb_white"></div>
+    </div>
+    <div class="an-card" id="pb-red-card">
+      <h3>Powerball 1–26: гарсан тоо</h3>
+      <div class="an-chart" data-draw="pb-red" data-source="pb_red"></div>
+    </div>
+  </section>
+
+  <!-- 4. Occupancy -->
+  <section class="an-sec" id="occupancy">
+    <header>
+      <p class="an-eyebrow">Мэдрэгчийн өгөгдөл · 7 өдөр, 30 секунд тутам</p>
+      <h2>Өрөөнд хэдэн хүн байгааг мэдрэгчээр таах</h2>
+    </header>
+    <p class="an-p"><b data-draw="h" data-source="headline" data-field="value" data-where="key=occ_rows" data-fmt="int">—</b> хэмжилтийн <b data-draw="h" data-source="headline" data-field="value" data-where="key=occ_empty_pct" data-fmt="pct">—</b>-д өрөө хоосон байжээ. "S1_Light <b data-draw="h" data-source="headline" data-field="value" data-where="key=occ_rule_th" data-fmt="int">—</b>-оос их бол хүнтэй" гэсэн ганц дүрэм <b data-draw="h" data-source="headline" data-field="value" data-where="key=occ_rule_acc" data-fmt="pct">—</b> зөв таана. Харин 1, 2, 3 хүнийг ялгахад гэрэл биш CO₂ тустай.</p>
+    <div class="an-grid">
+      <div class="an-card" id="occ-corr-card">
+        <h3>Мэдрэгч бүрийн хүний тоотой корреляци</h3>
+        <div class="an-chart an-tall" data-draw="occ-corr" data-source="occ_corr"></div>
+      </div>
+      <div class="an-card" id="occ-table-card">
+        <h3>Хүний тоогоор мэдрэгчийн дундаж утга</h3>
+        <div class="an-tbl-wrap">
+          <table class="an-tbl" data-source="occ_by_count" data-row-key="people">
+            <thead><tr><th data-field="people">Хүн</th><th data-field="readings">Хэмжилт</th><th data-field="light">Гэрэл (lux)</th><th data-field="co2">CO₂ (ppm)</th><th data-field="temp">Темп. (°C)</th></tr></thead>
+            <tbody data-draw="occ-rows"></tbody>
+          </table>
+        </div>
+        <p class="an-cap">Гэрэл: S1_Light, CO₂: S5_CO2, температур: S1_Temp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Sensor -->
+  <section class="an-sec" id="sensor">
+    <header>
+      <p class="an-eyebrow">Sensor_data · 5 минут тутам</p>
+      <h2>Нэг мэдрэгчийн цагийн цуваа</h2>
+    </header>
+    <p class="an-p"><b data-draw="h" data-source="headline" data-field="value" data-where="key=sensor_rows" data-fmt="int">—</b> хэмжилтийн <b data-draw="h" data-source="headline" data-field="value" data-where="key=sensor_floor_pct" data-fmt="pct">—</b> нь яг 50, энэ нь мэдрэгчийн доод хязгаар бололтой. <b data-draw="h" data-source="headline" data-field="value" data-where="key=sensor_span" data-fmt="int">—</b> хоногийн <b data-draw="h" data-source="headline" data-field="value" data-where="key=sensor_days" data-fmt="int">—</b>-д л өгөгдөл байгаа бөгөөд хамгийн урт тасалдал <b data-draw="h" data-source="headline" data-field="value" data-where="key=sensor_gap" data-fmt="d1">—</b> хоног.</p>
+    <div class="an-card" id="sensor-card">
+      <h3>Өдрийн дундаж утга ба хэлбэлзэл</h3>
+      <p class="an-cap">Шугам нь өдрийн дундаж, бүдэг талбай нь тухайн өдрийн min–max. Цоорхой нь өгөгдөлгүй өдрүүд.</p>
+      <div class="an-chart" data-draw="sensor" data-source="sensor_daily"></div>
+    </div>
+  </section>
+
+  <!-- 6. Japan -->
+  <section class="an-sec" id="japan">
+    <header>
+      <p class="an-eyebrow">Япон · 813 их, дээд сургууль</p>
+      <h2>Японы их сургуулиуд: хүндрэл ба үнэлгээ</h2>
+    </header>
+    <p class="an-p"><b data-draw="h" data-source="headline" data-field="value" data-where="key=jp_n" data-fmt="int">—</b> сургуулийн <b data-draw="h" data-source="headline" data-field="value" data-where="key=jp_private_pct" data-fmt="pct">—</b> нь хувийнх, <b data-draw="h" data-source="headline" data-field="value" data-where="key=jp_tokyo" data-fmt="int">—</b> нь Токиод байрладаг. Элсэхэд хэцүү сургуулийг оюутнууд илүү өндөр үнэлдэг (r = <b data-draw="h" data-source="headline" data-field="value" data-where="key=jp_corr" data-fmt="r">—</b>).</p>
+    <div class="an-grid">
+      <div class="an-card" id="jp-scatter-card">
+        <h3>Элсэлтийн хүндрэл (hensachi) ба оюутны үнэлгээ</h3>
+        <div class="an-legend"><span><i class="an-sw" data-i="0"></i>Үндэсний</span><span><i class="an-sw" data-i="1"></i>Орон нутгийн</span><span><i class="an-sw" data-i="2"></i>Хувийн</span></div>
+        <div class="an-chart an-tall" data-draw="jp-scatter" data-source="jp_unis"></div>
+      </div>
+      <div class="an-card" id="jp-table-card">
+        <h3>Төрлөөр</h3>
+        <div class="an-tbl-wrap">
+          <table class="an-tbl" data-source="jp_type" data-row-key="type">
+            <thead><tr><th data-field="type">Төрөл</th><th data-field="universities">Сургууль</th><th data-field="difficulty_median">Хүндрэл (медиан)</th><th data-field="rating_median">Үнэлгээ (медиан)</th></tr></thead>
+            <tbody data-draw="jp-rows"></tbody>
+          </table>
+        </div>
+        <p class="an-cap">Hensachi нь элсэлтийн шалгалтын стандарт оноо (50 = дундаж). Үнэлгээ нь 5 онооны системээр.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Salaries -->
+  <section class="an-sec" id="salaries">
+    <header>
+      <p class="an-eyebrow">АНУ · бакалаврын 50 мэргэжил</p>
+      <h2>Мэргэжлээр цалин: эхлэх ба карьерын дунд үе</h2>
+    </header>
+    <div class="an-kpis">
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=sal_stem" data-fmt="usd">—</b><span>STEM, медиан</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=sal_business" data-fmt="usd">—</b><span>Бизнес, медиан</span></div>
+      <div class="an-kpi"><b class="an-num" data-draw="h" data-source="headline" data-field="value" data-where="key=sal_hass" data-fmt="usd">—</b><span>Хүмүүнлэг, нийгэм (HASS), медиан</span></div>
+    </div>
+    <div class="an-card" id="sal-card">
+      <h3>Эхлэх цалингаас карьерын дунд үе хүртэл</h3>
+      <div class="an-legend"><span><i class="an-sw an-sw-hollow"></i>Эхлэх цалин</span><span><i class="an-sw" data-i="0"></i>STEM</span><span><i class="an-sw" data-i="1"></i>Бизнес</span><span><i class="an-sw" data-i="2"></i>HASS</span></div>
+      <p class="an-cap">Карьерын дунд үеийн медиан цалингаар эрэмбэлсэн. Цэг дээр очиж өсөлтийн хувийг харна.</p>
+      <div class="an-chart" style="min-height:900px" data-draw="sal" data-source="salaries"></div>
+    </div>
+  </section>
+
+  <details class="an-foot">
+    <summary>Өгөгдөл ба аргачлал</summary>
+    <ul>
+      <li>Бүх тоог <code>analysis/export_dashboard.py</code> скрипт <code>Dataset/</code> хавтасны CSV файлуудаас нэгтгэж гаргасан. Эх файлууд энд хуулагдаагүй, зөвхөн нэгтгэсэн дүн байгаа.</li>
+      <li>Орон сууц: <code>data_2.csv</code>-аас 5 сая ₮-өөс дээш, 10–200 м² зарыг, 50-аас дээш зартай УБ-ын дүүргүүдээр авсан.</li>
+      <li>Powerball: 2015-10-07-нд дүрэм өөрчлөгдсөн (цагаан 1–69, улаан 1–26) тул тэр өдрөөс хойших тохирлыг ашигласан.</li>
+      <li>Корреляци нь Пирсоны r.</li>
+    </ul>
+  </details>
+</div>
+  <footer class="site-foot">
+    <span>Эх код ба өгөгдөл: <a href="https://github.com/Sainbayar18/Sainbayar_data-analysis">github.com/Sainbayar18/Sainbayar_data-analysis</a></span>
+    <span>LA гэмт хэргийн эх өгөгдөл: <a href="https://data.lacity.org/Public-Safety/Crime-Data-from-2020-to-Present/2nrs-mtv8">data.lacity.org</a></span>
+  </footer>
+</div>
+<script>
+(function () {
+  const AN = (window.AN = {});
+  const f0 = d3.format(',.0f');
+  AN.fmt = {
+    int: (v) => f0(v),
+    mnt: (v) => f0(v) + ' ₮',
+    mln: (v) => d3.format('.2f')(v / 1e6) + ' сая ₮',
+    pct: (v) => d3.format('.1f')(v) + '%',
+    r: (v) => d3.format('.2f')(v),
+    d1: (v) => d3.format('.1f')(v),
+    usd: (v) => '$' + f0(v),
+    usdk: (v) => '$' + d3.format('.0f')(v / 1000) + 'к',
+  };
+  AN.color = (i) => dash.colors[i % dash.colors.length];
+
+  // Returns the source state when ok; otherwise draws the right placeholder.
+  AN.ready = function (el, id, inline) {
+    const s = dash.data(id);
+    if (s.status === 'ok') { el.classList.remove('dash-skeleton'); return s; }
+    el.replaceChildren();
+    if (s.status === 'loading') { if (inline) el.textContent = '—'; el.classList.add('dash-skeleton'); return null; }
+    el.classList.remove('dash-skeleton');
+    if (inline || s.status === 'connect') { el.textContent = '—'; return null; }
+    const p = document.createElement('p'); p.className = 'an-fail'; p.textContent = 'Ачаалж чадсангүй'; el.append(p);
+    return null;
+  };
+
+  AN.tip = function (el) {
+    const t = document.createElement('div'); t.className = 'an-tip'; t.hidden = true; el.append(t);
+    return {
+      show(ev, lines) {
+        t.replaceChildren(...lines.map((l, i) => { const d = document.createElement('div'); if (i === 0) d.className = 'an-tip-h'; d.textContent = l; return d; }));
+        t.hidden = false;
+        const r = el.getBoundingClientRect();
+        let x = ev.clientX - r.left + 12, y = ev.clientY - r.top + 12;
+        if (x + t.offsetWidth > r.width) x = Math.max(0, ev.clientX - r.left - t.offsetWidth - 12);
+        if (y + t.offsetHeight > r.height) y = Math.max(0, ev.clientY - r.top - t.offsetHeight - 12);
+        t.style.left = x + 'px'; t.style.top = y + 'px';
+      },
+      hide() { t.hidden = true; },
+    };
+  };
+
+  AN.measure = function (svg, texts, cls) {
+    const g = svg.append('g').attr('class', cls || 'an-tick');
+    let m = 0;
+    texts.forEach((s) => { m = Math.max(m, g.append('text').text(s).node().getComputedTextLength()); });
+    g.remove();
+    return m;
+  };
+
+  AN.fit = function (sel, maxW) {
+    sel.each(function () {
+      const n = this; let s = n.textContent;
+      if (n.getComputedTextLength() <= maxW) return;
+      while (s.length > 3 && n.getComputedTextLength() > maxW) { s = s.slice(0, -1); n.textContent = s + '…'; }
+    });
+  };
+
+  AN.svg = function (el, aria) {
+    el.replaceChildren();
+    return d3.select(el).append('svg').attr('width', '100%').attr('role', 'img').attr('aria-label', aria);
+  };
+
+  // Horizontal bars
+  AN.hbar = function (el, rows, o) {
+    const W = el.clientWidth || 600, bh = o.barH || 20, gap = 6;
+    const svg = AN.svg(el, o.aria);
+    const lw = Math.min(AN.measure(svg, rows.map(o.label)), W * 0.45);
+    const vw = AN.measure(svg, rows.map((r) => o.fmt(o.value(r))), 'an-val');
+    const m = { l: lw + 8, r: vw + 10, t: 2, b: 2 };
+    const H = m.t + m.b + rows.length * (bh + gap);
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear().domain([0, d3.max(rows, o.value)]).range([0, Math.max(10, W - m.l - m.r)]);
+    const tip = AN.tip(el);
+    const row = svg.append('g').attr('transform', `translate(${m.l},${m.t})`)
+      .selectAll('g').data(rows).join('g').attr('transform', (d, i) => `translate(0,${i * (bh + gap)})`);
+    row.append('rect').attr('x', -m.l).attr('width', W).attr('height', bh + gap).style('fill', 'transparent');
+    row.append('text').attr('class', 'an-tick').attr('x', -8).attr('y', bh / 2).attr('dy', '0.35em').attr('text-anchor', 'end').text(o.label).call(AN.fit, lw);
+    row.append('rect').attr('height', bh).attr('rx', 2).attr('width', (d) => Math.max(1, x(o.value(d)))).style('fill', (d, i) => (o.color ? o.color(d, i) : AN.color(0)));
+    row.append('text').attr('class', 'an-val').attr('x', (d) => x(o.value(d)) + 6).attr('y', bh / 2).attr('dy', '0.35em').text((d) => o.fmt(o.value(d)));
+    row.on('pointermove', (ev, d) => tip.show(ev, o.tip(d))).on('pointerleave', () => tip.hide());
+  };
+
+  // Vertical bars with optional expected line
+  AN.vbar = function (el, rows, o) {
+    const W = el.clientWidth || 600, H = o.height || 220;
+    const svg = AN.svg(el, o.aria).attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const y = d3.scaleLinear().domain([0, d3.max(rows, o.value) * 1.05]).nice();
+    const yt = y.ticks(4);
+    const yw = AN.measure(svg, yt.map(o.fmtY));
+    const m = { l: yw + 8, r: o.expected ? 70 : 6, t: 8, b: 22 };
+    y.range([H - m.b, m.t]);
+    const x = d3.scaleBand().domain(rows.map(o.x)).range([m.l, W - m.r]).padding(0.18);
+    const g = svg.append('g');
+    g.selectAll('line.an-gridline').data(yt).join('line').attr('class', 'an-gridline').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y);
+    g.selectAll('text.yl').data(yt).join('text').attr('class', 'an-tick yl').attr('x', m.l - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text(o.fmtY);
+    const xl = AN.measure(svg, rows.map((r) => String(o.x(r))));
+    const every = Math.max(1, Math.ceil((xl + 8) / x.step()));
+    g.selectAll('text.xl').data(rows.filter((r, i) => i % every === 0)).join('text').attr('class', 'an-tick xl')
+      .attr('x', (d) => x(o.x(d)) + x.bandwidth() / 2).attr('y', H - 6).attr('text-anchor', 'middle').text((d) => o.x(d));
+    const tip = AN.tip(el);
+    g.selectAll('rect.b').data(rows).join('rect').attr('class', 'b').attr('x', (d) => x(o.x(d))).attr('width', x.bandwidth())
+      .attr('y', (d) => y(o.value(d))).attr('height', (d) => y(0) - y(o.value(d))).style('fill', (d) => (o.color ? o.color(d) : AN.color(0)));
+    g.selectAll('rect.hit').data(rows).join('rect').attr('class', 'hit').attr('x', (d) => x(o.x(d)) - (x.step() - x.bandwidth()) / 2).attr('width', x.step())
+      .attr('y', m.t).attr('height', H - m.b - m.t).style('fill', 'transparent')
+      .on('pointermove', (ev, d) => tip.show(ev, o.tip(d))).on('pointerleave', () => tip.hide());
+    g.append('line').attr('class', 'an-axis').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(0)).attr('y2', y(0));
+    if (o.expected) {
+      const e = o.expected;
+      g.append('line').attr('class', 'an-ref').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(e)).attr('y2', y(e)).style('pointer-events', 'none');
+      g.append('text').attr('class', 'an-tick').attr('x', W - m.r + 6).attr('y', y(e)).attr('dy', '0.35em').text('≈ ' + d3.format('.0f')(e));
+    }
+  };
+
+  // Line chart (time or numeric x), optional min–max band and shaded range
+  AN.line = function (el, rows, o) {
+    const W = el.clientWidth || 600, H = o.height || 240;
+    const svg = AN.svg(el, o.aria).attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const lo = o.lo || o.y, hi = o.hi || o.y;
+    const y = d3.scaleLinear().domain([o.y0 != null ? o.y0 : d3.min(rows, lo), d3.max(rows, hi)]).nice();
+    const yt = y.ticks(4);
+    const yw = AN.measure(svg, yt.map(o.fmtY));
+    const m = { l: yw + 8, r: 14, t: 10, b: 22 };
+    y.range([H - m.b, m.t]);
+    const x = (o.time ? d3.scaleUtc() : d3.scaleLinear()).domain(d3.extent(rows, o.x)).range([m.l, W - m.r]);
+    const g = svg.append('g');
+    g.selectAll('line.an-gridline').data(yt).join('line').attr('class', 'an-gridline').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y);
+    g.selectAll('text.yl').data(yt).join('text').attr('class', 'an-tick yl').attr('x', m.l - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text(o.fmtY);
+    const xt = x.ticks(Math.max(2, Math.floor((W - m.l - m.r) / 90)));
+    g.selectAll('text.xl').data(xt).join('text').attr('class', 'an-tick xl').attr('x', x).attr('y', H - 6).attr('text-anchor', 'middle').text(o.fmtX);
+    if (o.shade) {
+      const x0 = Math.max(m.l, x(o.shade.from)), x1 = W - m.r;
+      g.append('rect').attr('class', 'an-shade').attr('x', x0).attr('y', m.t).attr('width', Math.max(0, x1 - x0)).attr('height', H - m.b - m.t);
+      g.append('text').attr('class', 'an-tick').attr('x', x0 + 6).attr('y', m.t + 12).text(o.shade.label);
+    }
+    const defined = (d) => d.__gap !== true;
+    if (o.lo) {
+      g.append('path').datum(rows).attr('d', d3.area().defined(defined).x((d) => x(o.x(d))).y0((d) => y(o.lo(d))).y1((d) => y(o.hi(d))))
+        .style('fill', AN.color(0)).style('opacity', 0.18);
+    }
+    g.append('path').datum(rows).attr('d', d3.line().defined(defined).x((d) => x(o.x(d))).y((d) => y(o.y(d))))
+      .style('fill', 'none').style('stroke', AN.color(0)).style('stroke-width', 1.75);
+    const real = rows.filter(defined);
+    const last = real[real.length - 1];
+    g.append('circle').attr('cx', x(o.x(last))).attr('cy', y(o.y(last))).attr('r', 3).style('fill', AN.color(0));
+    const dot = g.append('circle').attr('r', 4).style('fill', AN.color(0)).style('stroke', 'var(--color-bg)').style('stroke-width', 2).attr('visibility', 'hidden');
+    const tip = AN.tip(el);
+    const bis = d3.bisector(o.x).center;
+    g.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.b - m.t).style('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px] = d3.pointer(ev);
+        const d = real[bis(real, x.invert(px))];
+        if (!d) return;
+        dot.attr('cx', x(o.x(d))).attr('cy', y(o.y(d))).attr('visibility', 'visible');
+        tip.show(ev, o.tip(d));
+      })
+      .on('pointerleave', () => { dot.attr('visibility', 'hidden'); tip.hide(); });
+  };
+
+  // Ranges: a line from lo to hi per row, with dots
+  AN.range = function (el, rows, o) {
+    const W = el.clientWidth || 600, bh = o.rowH || 24;
+    const svg = AN.svg(el, o.aria);
+    const lw = Math.min(AN.measure(svg, rows.map(o.label)), W * 0.42);
+    const vals = rows.flatMap((r) => [o.lo(r), o.hi(r)]);
+    const x = d3.scaleLinear().domain([o.x0 != null ? o.x0 : d3.min(vals), d3.max(vals)]).nice();
+    const xt = x.ticks(Math.max(2, Math.floor((W - lw) / 90)));
+    const m = { l: lw + 10, r: 16, t: 20, b: 4 };
+    const H = m.t + m.b + rows.length * bh;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    x.range([m.l, W - m.r]);
+    const g = svg.append('g');
+    g.selectAll('line.an-gridline').data(xt).join('line').attr('class', 'an-gridline').attr('x1', x).attr('x2', x).attr('y1', m.t).attr('y2', H - m.b);
+    g.selectAll('text.xl').data(xt).join('text').attr('class', 'an-tick xl').attr('x', x).attr('y', 12).attr('text-anchor', 'middle').text(o.fmtX);
+    const tip = AN.tip(el);
+    const row = g.selectAll('g.r').data(rows).join('g').attr('class', 'r').attr('transform', (d, i) => `translate(0,${m.t + i * bh + bh / 2})`);
+    row.append('rect').attr('x', 0).attr('y', -bh / 2).attr('width', W).attr('height', bh).style('fill', 'transparent');
+    row.append('text').attr('class', 'an-tick').attr('x', m.l - 10).attr('dy', '0.35em').attr('text-anchor', 'end').text(o.label).call(AN.fit, lw);
+    row.append('line').attr('x1', (d) => x(o.lo(d))).attr('x2', (d) => x(o.hi(d))).style('stroke', (d) => o.color(d)).style('stroke-width', 2).style('opacity', 0.55);
+    if (o.loDot) row.append('circle').attr('cx', (d) => x(o.lo(d))).attr('r', 4).style('fill', 'var(--color-panel)').style('stroke', (d) => o.color(d)).style('stroke-width', 1.5);
+    row.append('circle').attr('cx', (d) => x(o.mid(d))).attr('r', 5).style('fill', (d) => o.color(d));
+    row.on('pointermove', (ev, d) => tip.show(ev, o.tip(d))).on('pointerleave', () => tip.hide());
+  };
+
+  // Legend swatches follow the series colors
+  dash.onData(() => {
+    document.querySelectorAll('.an-sw[data-i]').forEach((s) => { s.style.background = AN.color(+s.dataset.i); });
+    document.querySelectorAll('.an-sw-hollow').forEach((s) => { s.style.background = 'var(--color-panel)'; s.style.border = '1.5px solid var(--color-fg-muted)'; });
+  });
+
+  // Section links keep their place in a copied link
+  document.querySelectorAll('.an-nav a').forEach((a) => {
+    a.addEventListener('click', (ev) => {
+      const id = a.getAttribute('href').slice(1);
+      const t = document.getElementById(id);
+      if (!t) return;
+      ev.preventDefault();
+      t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: no-preference)').matches ? 'smooth' : 'auto' });
+      dash.setLink(id);
+    });
+  });
+  const h0 = (location.hash || '').slice(1);
+  if (h0) { const t = document.getElementById(h0); if (t && t.classList.contains('an-sec')) setTimeout(() => t.scrollIntoView(), 300); }
+})();
+</script>
+
+<script>
+(function () {
+  const AN = window.AN, F = AN.fmt;
+  const utc = (s) => new Date(s + 'T00:00:00Z');
+
+  // Headline numbers, each picked by its key
+  dash.draw('h', (el) => {
+    const s = AN.ready(el, 'headline', true);
+    if (!s) return;
+    const key = (el.dataset.where || '').split('=')[1];
+    const row = s.data.find((r) => r.key === key);
+    el.textContent = row && row.value != null ? (F[el.dataset.fmt] || F.int)(row.value) : '—';
+  });
+
+  // First row's name (the leader)
+  dash.draw('topname', (el) => {
+    const s = AN.ready(el, el.dataset.source, true);
+    if (!s) return;
+    const r = s.data[0];
+    el.textContent = r ? String(r[el.dataset.field]) : '—';
+  });
+
+  dash.draw('apt-district', (el) => {
+    const s = AN.ready(el, 'apt_district'); if (!s) return;
+    AN.range(el, s.data, {
+      aria: 'Улаанбаатарын дүүргүүдийн 1 м² орон сууцны медиан үнэ ба дунд 50% хүрээ',
+      label: (d) => d.district, lo: (d) => d.q1_m2, hi: (d) => d.q3_m2, mid: (d) => d.median_m2,
+      color: () => AN.color(0), fmtX: (v) => d3.format('.1f')(v / 1e6) + ' сая',
+      tip: (d) => [d.district, 'Медиан: ' + F.mnt(d.median_m2) + ' / м²', 'Дунд 50%: ' + F.mln(d.q1_m2) + ' – ' + F.mln(d.q3_m2), 'Медиан үнэ: ' + F.mln(d.median_price), 'Зар: ' + F.int(d.listings)],
+    });
+  });
+
+  dash.draw('apt-loc', (el) => {
+    const s = AN.ready(el, 'apt_locations'); if (!s) return;
+    AN.hbar(el, s.data, {
+      aria: 'Улаанбаатарын хамгийн үнэтэй 10 байршил, 1 м²-ын медиан үнэ',
+      label: (d) => d.location, value: (d) => d.median_m2, fmt: F.mln,
+      tip: (d) => [d.location, F.mnt(d.median_m2) + ' / м²', 'Зар: ' + F.int(d.listings)],
+    });
+  });
+
+  dash.draw('apt-year', (el) => {
+    const s = AN.ready(el, 'apt_year'); if (!s) return;
+    AN.line(el, s.data, {
+      aria: 'Ашиглалтанд орсон оноор 1 м² орон сууцны медиан үнэ',
+      x: (d) => d.year, y: (d) => d.median_m2, fmtX: d3.format('d'), fmtY: (v) => d3.format('.1f')(v / 1e6) + ' сая',
+      tip: (d) => [d.year + ' онд ашиглалтанд орсон', F.mnt(d.median_m2) + ' / м²', 'Зар: ' + F.int(d.listings)],
+    });
+  });
+
+  dash.draw('crime-month', (el) => {
+    const s = AN.ready(el, 'crime_monthly'); if (!s) return;
+    AN.line(el, s.data, {
+      aria: 'Лос Анжелесийн сар бүрийн гэмт хэргийн тоо, 2020–2025', time: true, y0: 0,
+      x: (d) => utc(d.month), y: (d) => d.crimes, fmtX: d3.utcFormat('%Y'), fmtY: d3.format('~s'),
+      shade: { from: utc('2024-03-01'), label: 'NIBRS шилжилт' },
+      tip: (d) => [d3.utcFormat('%Y-%m')(utc(d.month)), F.int(d.crimes) + ' хэрэг'],
+    });
+  });
+
+  dash.draw('crime-types', (el) => {
+    const s = AN.ready(el, 'crime_types'); if (!s) return;
+    AN.hbar(el, s.data, {
+      aria: 'Лос Анжелесийн хамгийн түгээмэл 10 төрлийн гэмт хэрэг', barH: 18,
+      label: (d) => d.type, value: (d) => d.crimes, fmt: d3.format('.3~s'),
+      tip: (d) => [d.type, F.int(d.crimes) + ' хэрэг'],
+    });
+  });
+
+  dash.draw('crime-hour', (el) => {
+    const s = AN.ready(el, 'crime_hour'); if (!s) return;
+    const max = d3.max(s.data, (d) => d.crimes);
+    AN.vbar(el, s.data, {
+      aria: 'Гэмт хэрэг өдрийн цагаар', x: (d) => d.hour, value: (d) => d.crimes, fmtY: d3.format('~s'),
+      color: (d) => (d.crimes === max ? 'var(--cds-chart-status-critical)' : AN.color(0)),
+      tip: (d) => [String(d.hour).padStart(2, '0') + ':00 – ' + String(d.hour).padStart(2, '0') + ':59', F.int(d.crimes) + ' хэрэг'],
+    });
+  });
+
+  dash.draw('crime-areas', (el) => {
+    const s = AN.ready(el, 'crime_areas'); if (!s) return;
+    AN.hbar(el, s.data, {
+      aria: 'LAPD-ийн бүсүүдээр гэмт хэргийн тоо', barH: 14,
+      label: (d) => d.area, value: (d) => d.crimes, fmt: d3.format('.3~s'),
+      tip: (d) => [d.area, F.int(d.crimes) + ' хэрэг'],
+    });
+  });
+
+  function pb(name, id, aria) {
+    dash.draw(name, (el) => {
+      const s = AN.ready(el, id); if (!s) return;
+      const e = s.data[0] ? s.data[0].expected : 0;
+      AN.vbar(el, s.data, {
+        aria, x: (d) => d.ball, value: (d) => d.draws, fmtY: d3.format('d'), expected: e,
+        tip: (d) => ['Бөмбөг ' + d.ball, d.draws + ' удаа гарсан', 'Хүлээгдэх ≈ ' + d3.format('.1f')(d.expected), (d.draws >= d.expected ? '+' : '') + d3.format('.0f')(d.draws - d.expected) + ' зөрүү'],
+      });
+    });
+  }
+  pb('pb-white', 'pb_white', 'Powerball цагаан бөмбөг 1–69 гарсан тоо, хүлээгдэх утгатай харьцуулсан');
+  pb('pb-red', 'pb_red', 'Powerball улаан бөмбөг 1–26 гарсан тоо, хүлээгдэх утгатай харьцуулсан');
+
+  dash.draw('occ-corr', (el) => {
+    const s = AN.ready(el, 'occ_corr'); if (!s) return;
+    AN.hbar(el, s.data, {
+      aria: 'Мэдрэгч бүрийн өрөөний хүний тоотой корреляци', barH: 16,
+      label: (d) => d.sensor, value: (d) => d.corr, fmt: F.r,
+      color: (d) => (/Light/.test(d.sensor) ? AN.color(0) : 'var(--cds-chart-muted)'),
+      tip: (d) => [d.sensor, 'r = ' + F.r(d.corr)],
+    });
+  });
+
+  dash.draw('occ-rows', (tb) => {
+    const s = dash.data('occ_by_count');
+    tb.replaceChildren();
+    if (s.status !== 'ok') return;
+    s.data.forEach((r) => {
+      const tr = document.createElement('tr');
+      [String(r.people), F.int(r.readings), d3.format('.1f')(r.light), F.int(r.co2), d3.format('.2f')(r.temp)].forEach((v) => {
+        const td = document.createElement('td'); td.textContent = v; tr.append(td);
+      });
+      tb.append(tr);
+    });
+  });
+
+  dash.draw('sensor', (el) => {
+    const s = AN.ready(el, 'sensor_daily'); if (!s) return;
+    // Insert gap markers between days that are more than one day apart, so the line breaks
+    const rows = [];
+    s.data.forEach((d, i) => {
+      if (i > 0 && utc(d.day) - utc(s.data[i - 1].day) > 864e5 * 1.5) rows.push({ __gap: true, day: d.day, mean: 0, min: 0, max: 0 });
+      rows.push(d);
+    });
+    AN.line(el, rows, {
+      aria: 'Мэдрэгчийн өдрийн дундаж утга ба min–max хэлбэлзэл, 2016–2017', time: true,
+      x: (d) => utc(d.day), y: (d) => d.mean, lo: (d) => d.min, hi: (d) => d.max, y0: 40,
+      fmtX: d3.utcFormat('%Y-%m'), fmtY: d3.format('d'),
+      tip: (d) => [d.day, 'Дундаж: ' + d3.format('.1f')(d.mean), 'Min–max: ' + d.min + ' – ' + d.max],
+    });
+  });
+
+  const JP = { National: ['Үндэсний', 0], Public: ['Орон нутгийн', 1], Private: ['Хувийн', 2] };
+
+  dash.draw('jp-scatter', (el) => {
+    const s = AN.ready(el, 'jp_unis'); if (!s) return;
+    const rows = s.data.filter((d) => d.difficulty_SD != null && d.review_rating != null);
+    const W = el.clientWidth || 600, H = Math.max(320, Math.min(440, W * 0.75));
+    const svg = AN.svg(el, 'Японы их сургуулиудын элсэлтийн хүндрэл ба оюутны үнэлгээ, төрлөөр').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const y = d3.scaleLinear().domain(d3.extent(rows, (d) => d.review_rating)).nice();
+    const yt = y.ticks(5);
+    const m = { l: AN.measure(svg, yt.map(d3.format('.1f'))) + 8, r: 10, t: 8, b: 34 };
+    y.range([H - m.b, m.t]);
+    const x = d3.scaleLinear().domain(d3.extent(rows, (d) => d.difficulty_SD)).nice().range([m.l, W - m.r]);
+    const xt = x.ticks(Math.max(2, Math.floor((W - m.l) / 70)));
+    const g = svg.append('g');
+    g.selectAll('line.gy').data(yt).join('line').attr('class', 'an-gridline gy').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y);
+    g.selectAll('text.yl').data(yt).join('text').attr('class', 'an-tick yl').attr('x', m.l - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text(d3.format('.1f'));
+    g.selectAll('text.xl').data(xt).join('text').attr('class', 'an-tick xl').attr('x', x).attr('y', H - m.b + 16).attr('text-anchor', 'middle').text(d3.format('d'));
+    g.append('text').attr('class', 'an-tick').attr('x', W - m.r).attr('y', H - 2).attr('text-anchor', 'end').text('Hensachi →');
+    const order = ['Private', 'Public', 'National'];
+    const sorted = rows.slice().sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+    const tip = AN.tip(el);
+    g.selectAll('circle').data(sorted).join('circle').attr('cx', (d) => x(d.difficulty_SD)).attr('cy', (d) => y(d.review_rating)).attr('r', 3.5)
+      .style('fill', (d) => AN.color((JP[d.type] || ['', 2])[1])).style('opacity', 0.75)
+      .on('pointermove', (ev, d) => tip.show(ev, [d.name, (JP[d.type] || [d.type])[0] + ' · ' + d.state, 'Hensachi: ' + d.difficulty_SD, 'Үнэлгээ: ' + d.review_rating + ' (' + F.int(d.review_count || 0) + ' сэтгэгдэл)']))
+      .on('pointerleave', () => tip.hide());
+  });
+
+  dash.draw('jp-rows', (tb) => {
+    const s = dash.data('jp_type');
+    tb.replaceChildren();
+    if (s.status !== 'ok') return;
+    s.data.forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = r.type;
+      [(JP[r.type] || [r.type])[0], F.int(r.universities), d3.format('.1f')(r.difficulty_median), d3.format('.2f')(r.rating_median)].forEach((v) => {
+        const td = document.createElement('td'); td.textContent = v; tr.append(td);
+      });
+      tb.append(tr);
+    });
+  });
+
+  const GRP = { STEM: 0, Business: 1, HASS: 2 };
+  dash.draw('sal', (el) => {
+    const s = AN.ready(el, 'salaries'); if (!s) return;
+    AN.range(el, s.data, {
+      aria: 'АНУ-ын 50 мэргэжлийн эхлэх ба карьерын дунд үеийн медиан цалин', rowH: 18, x0: 30000, loDot: true,
+      label: (d) => d.major, lo: (d) => d.start, hi: (d) => d.mid, mid: (d) => d.mid,
+      color: (d) => AN.color(GRP[d.group] != null ? GRP[d.group] : 0), fmtX: F.usdk,
+      tip: (d) => [d.major + ' (' + d.group + ')', 'Эхлэх: ' + F.usd(d.start), 'Карьерын дунд үе: ' + F.usd(d.mid), 'Өсөлт: +' + d3.format('.0f')(d.growth_pct) + '%', '10–90-р хувь: ' + F.usd(d.p10) + ' – ' + F.usd(d.p90)],
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
